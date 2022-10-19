@@ -4,7 +4,7 @@ import axios from "axios";
 
 const Home = () => {
 
-
+const url = "https://tutorials-api-cw.herokuapp.com/api/tutorials";
 
   return (
     <>
