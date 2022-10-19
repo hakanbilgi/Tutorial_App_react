@@ -1,22 +1,14 @@
-import { FaEdit } from "react-icons/fa";
+import { CiEdit } from "react-icons/ci";
 import { AiFillDelete } from "react-icons/ai";
 
 const TutorialList = () => {
   const tutorials = [
-    {
-      id: 1,
-      title: "JS",
-      description: "JS is a programming language",
-    },
-    {
-      id: 2,
-      title: "React",
-      description: "JS library for UI design",
-    },
+    { id: 1, title: "JS", description: "JS is a programming" },
+    { id: 2, title: "React", description: "JS library for UI design" },
   ];
 
   return (
-    <div className="container mt-4">
+    <div className="container mt-4 ">
       <table className="table table-striped">
         <thead>
           <tr>
@@ -28,24 +20,21 @@ const TutorialList = () => {
             </th>
           </tr>
         </thead>
+
         <tbody>
-          {tutorials?.map((item) => {
+          {tutorials.map((item) => {
             const { id, title, description } = item;
             return (
               <tr key={id}>
                 <th>{id}</th>
                 <td>{title}</td>
                 <td>{description}</td>
-                <td className="text-center text-nowrap">
-                  <FaEdit
-                    size={20}
-                    type="button"
-                    className="me-2 text-warning"
-                  />
+                <td>
+                  <CiEdit size={20} type="button" className="text-danger" />
                   <AiFillDelete
                     size={22}
                     type="button"
-                    className="text-danger "
+                    className="text-danger"
                   />
                 </td>
               </tr>
