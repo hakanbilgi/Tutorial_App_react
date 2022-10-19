@@ -1,11 +1,7 @@
 import { CiEdit } from "react-icons/ci";
 import { AiFillDelete } from "react-icons/ai";
 
-const TutorialList = () => {
-  const tutorials = [
-    { id: 1, title: "JS", description: "JS is a programming" },
-    { id: 2, title: "React", description: "JS library for UI design" },
-  ];
+const TutorialList = ({tutor}) => {
 
   return (
     <div className="container mt-4 ">
@@ -22,7 +18,7 @@ const TutorialList = () => {
         </thead>
 
         <tbody>
-          {tutorials.map((item) => {
+          {tutor?.map((item) => {
             const { id, title, description } = item;
             return (
               <tr key={id}>
