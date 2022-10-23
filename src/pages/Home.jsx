@@ -3,36 +3,31 @@ import TutorialList from "../components/TutorialList";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-
 const Home = () => {
- const [tutorials,setTutorials] = useState ([])
+  const [tutorials, setTutorials] = useState([]);
 
-const url = "https://tutorials-api-cw.herokuapp.com/api/tutorials";
+  const url = "https://tutorials-api-cw.herokuapp.com/api/tutorials";
 
-const getTutorials = async ()=>{
-  
-try {
-    const {data} = await axios(url);
-  console.log(data);
-  setTutorials(data);
-}
-catch (error) {
-  console.log(error)
-}
-};
+  //? CRUD: (GET-READ)
+  const getTutorials = async () => {
+    try {
+      const { data } = await axios(url);
+      console.log(data);
+      setTutorials(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-
-useEffect(() => {
-  getTutorials();
- 
-  }, [])
-
-
+  //? didmount
+  useEffect(() => {
+    getTutorials();
+  }, []);
 
   return (
     <>
-      <AddTutorial />
-      <TutorialList tutor={tutorials} />
+      <AddTutorial getTutorials={getTutorials} />
+      <TutorialList tutor={tutorials} getTutorials={getTutorials} />
     </>
   );
 };
