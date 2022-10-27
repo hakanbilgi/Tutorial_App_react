@@ -1,13 +1,46 @@
-import { useState, useEffect } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
-const EditTutorial = ({ item, editTutorial }) => {
-  const { id, title, description } = item;
-  const [newTitle, setNewTitle] = useState(title);
-  const [newdescription, setNewdescription] = useState(description);
+const EditTutorial = ({ getTutorials, editItem }) => {
+  const { id, title: newTitle, description: newDescription } = editItem;
+
+  const [title, setTitle] = useState(newTitle);
+  const [description, setDescription] = useState(newDescription);
+
+  //? https://reactjs.org/docs/hooks-reference.html#usestate
+  //! State degiskeninin degeri, 1.render ile initialState
+  //! parametresinin ilk degerini alir. Dolayisiyle bu durumda
+  //! prop'tan gelen ilk deger state'e aktarilir.
+  //! Sonradan degisen props degerleri useState'e aktarilmaz.
+  //! Eger props'tan gelen degerleri her degisimde useState'e
+  //! aktarmak istersek useEffect hook'unu componentDidUpdate
+  //! gibi kullanabiriz.
+
+  //? componentDidUpdate
+  //? newTitle veya description her degistiginde local title ve
+  //? description state'lerimizi gunceliyoruz.
   useEffect(() => {
-    setNewTitle(title);
-    setNewdescription(description);
-  }, [title, description]);
+    setTitle(newTitle);
+    setDescription(newDescription);
+  }, [newTitle, newDescription]);
+
+  //! Update (PUT:Whole Update,PATCH :Partially Update)
+  const editTutorial = async (id, tutor) => {
+    const url = "https://tutorials-api-cw.herokuapp.com/api/tutorials";
+    try {
+      await axios.put(`${url}/${id}`, tutor);
+    } catch (error) {
+      console.log(error);
+    }
+    getTutorials();
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    editTutorial(id, { title, description });
+    setTitle("");
+    setDescription("");
+  };
 
   return (
     <div>
@@ -26,36 +59,52 @@ const EditTutorial = ({ item, editTutorial }) => {
               />
             </div>
             <div className="modal-body">
-              <div>
-                <input
-                  type="text"
-                  value={newTitle}
-                  onChange={(e) => setNewTitle(e.target.value)}
-                />
-              </div>
-              <div className="mt-3">
-                <input
-                  type="text"
-                  value={newdescription}
-                  onChange={(e) => setNewdescription(e.target.value)}
-                />
-              </div>
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <label htmlFor="title" className="form-label">
+                    Title
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="title"
+                    placeholder="Enter your title"
+                    value={title || ""}
+                    onChange={(e) => setTitle(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="desc" className="form-label">
+                    Description
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="desc"
+                    placeholder="Enter your Description"
+                    value={description || ""}
+                    onChange={(e) => setDescription(e.target.value)}
+                    required
+                  />
+                </div>
+              </form>
             </div>
             <div className="modal-footer">
-              <button
+              {/* <button
                 type="button"
                 className="btn btn-secondary"
                 data-bs-dismiss="modal"
               >
                 Close
-              </button>
+              </button> */}
               <button
                 type="button"
                 className="btn btn-primary"
                 data-bs-dismiss="modal"
-                onClick={() => editTutorial(id, newTitle, newdescription)}
+                onClick={handleSubmit}
               >
-                Save changes
+                Save
               </button>
             </div>
           </div>
